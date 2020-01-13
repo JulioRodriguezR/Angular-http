@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
@@ -7,6 +8,7 @@ import { HttpClient } from '@angular/common/http';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
+
   loadedPosts = [];
 
   constructor(private http: HttpClient) { }
@@ -14,7 +16,6 @@ export class AppComponent implements OnInit {
   ngOnInit() { }
 
   onCreatePost(postData: { title: string; content: string }) {
-    // Send Http request
     this.http
       .post(
         'https://ng-guide-c2bed.firebaseio.com/posts.json',
@@ -24,12 +25,21 @@ export class AppComponent implements OnInit {
   }
 
   private onFetchPosts() {
-    // Send Http request
-    this.http.get('https://ng-guide-c2bed.firebaseio.com/posts.json')
+    this.http
+      .get('https://ng-guide-c2bed.firebaseio.com/posts.json')
+      .pipe(
+        map(respData => {
+          const postsArray = [];
+          for (const k in respData) {
+            if (respData.hasOwnProperty(k)) {
+              postsArray.push({ ...respData[k], id: k }); // id obj --Firebase
+            }
+          }
+          return postsArray;
+        })
+      )
       .subscribe(posts => console.log(posts));
   }
 
-  onClearPosts() {
-    // Send Http request
-  }
+  onClearPosts() { }
 }
