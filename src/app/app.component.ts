@@ -20,13 +20,13 @@ export class AppComponent implements OnInit {
         'https://ng-guide-c2bed.firebaseio.com/posts.json',
         postData // body
       )
-      .subscribe(responseData => {
-        console.log(responseData);
-      });
+      .subscribe(responseData => console.log(responseData));
   }
 
-  onFetchPosts() {
+  private onFetchPosts() {
     // Send Http request
+    this.http.get('https://ng-guide-c2bed.firebaseio.com/posts.json')
+      .subscribe(posts => console.log(posts));
   }
 
   onClearPosts() {
