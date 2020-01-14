@@ -24,7 +24,7 @@ export class PostsService {
   }
 
   fetchPosts() {
-    this.http
+    return this.http
       .get<{ [key: string]: Post }>('https://ng-guide-c2bed.firebaseio.com/posts.json')
       .pipe(
         map(respData => {
@@ -36,8 +36,7 @@ export class PostsService {
           }
           return postsArray;
         })
-      )
-      .subscribe(posts => { });
+      );
   }
 
   onClearPosts() { }

@@ -18,7 +18,10 @@ export class AppComponent implements OnInit {
   constructor(private postsSrv: PostsService) { }
 
   ngOnInit() {
-    this.postsSrv.fetchPosts();
+    this.postsSrv.fetchPosts()
+      .subscribe(posts => {
+        this.loadedPosts = posts
+      });
   }
 
   onCreatePost(postData: Post) {
@@ -26,7 +29,10 @@ export class AppComponent implements OnInit {
   }
 
   onFetchPosts() {
-    this.postsSrv.fetchPosts();
+    this.postsSrv.fetchPosts()
+      .subscribe(posts => {
+        this.loadedPosts = posts
+      });
   }
 
   onClearPosts() { }
