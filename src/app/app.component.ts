@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 
+import { Post } from './post.model';
+
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -26,10 +29,10 @@ export class AppComponent implements OnInit {
 
   private onFetchPosts() {
     this.http
-      .get('https://ng-guide-c2bed.firebaseio.com/posts.json')
+      .get<{ [key: string]: Post }>('https://ng-guide-c2bed.firebaseio.com/posts.json')
       .pipe(
         map(respData => {
-          const postsArray = [];
+          const postsArray: Post[] = [];
           for (const k in respData) {
             if (respData.hasOwnProperty(k)) {
               postsArray.push({ ...respData[k], id: k }); // id obj --Firebase
@@ -38,7 +41,7 @@ export class AppComponent implements OnInit {
           return postsArray;
         })
       )
-      .subscribe(posts => console.log(posts));
+      .subscribe(posts => this.loadedPosts = posts);
   }
 
   onClearPosts() { }
