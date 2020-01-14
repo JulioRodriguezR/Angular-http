@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 
 import { Post } from './post.model';
+import { PostsService } from './posts.service';
 
 
 @Component({
@@ -12,36 +13,20 @@ import { Post } from './post.model';
 })
 export class AppComponent implements OnInit {
 
-  loadedPosts = [];
+  public loadedPosts = [];
 
-  constructor(private http: HttpClient) { }
+  constructor(private postsSrv: PostsService) { }
 
-  ngOnInit() { }
-
-  onCreatePost(postData: { title: string; content: string }) {
-    this.http
-      .post(
-        'https://ng-guide-c2bed.firebaseio.com/posts.json',
-        postData // body
-      )
-      .subscribe(responseData => console.log(responseData));
+  ngOnInit() {
+    this.postsSrv.fetchPosts();
   }
 
-  private onFetchPosts() {
-    this.http
-      .get<{ [key: string]: Post }>('https://ng-guide-c2bed.firebaseio.com/posts.json')
-      .pipe(
-        map(respData => {
-          const postsArray: Post[] = [];
-          for (const k in respData) {
-            if (respData.hasOwnProperty(k)) {
-              postsArray.push({ ...respData[k], id: k }); // id obj --Firebase
-            }
-          }
-          return postsArray;
-        })
-      )
-      .subscribe(posts => this.loadedPosts = posts);
+  onCreatePost(postData: Post) {
+    this.postsSrv.createAndStorePost(postData.title, postData.content);
+  }
+
+  onFetchPosts() {
+    this.postsSrv.fetchPosts();
   }
 
   onClearPosts() { }
