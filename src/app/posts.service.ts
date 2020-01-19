@@ -4,12 +4,15 @@ import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 
 import { Post } from './post.model';
+import { Subject } from 'rxjs';
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class PostsService {
+
+  public error = new Subject<string>();
 
   constructor(private http: HttpClient) { }
 
@@ -20,7 +23,14 @@ export class PostsService {
         'https://ng-guide-c2bed.firebaseio.com/posts.json', // url
         postData // body
       )
-      .subscribe(responseData => console.log(responseData));
+      .subscribe(
+        responseData => {
+          console.log(responseData)
+        },
+        error => {
+          this.error.next(error.message);
+        }
+      );
   }
 
   fetchPosts() {
