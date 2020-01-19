@@ -38,13 +38,19 @@ export class PostsService {
   }
 
   fetchPosts() {
-    let searchParams = new HttpParams();
-    searchParams = searchParams.append('print', 'pretty');
+    // Make params
+    let params = new HttpParams();
+    params = params.append('print', 'pretty');
+
+    let headers = new HttpHeaders(
+      { 'Custom-Header': 'Hello' }
+    );
+
     return this.http
       .get<{ [key: string]: Post }>('https://ng-guide-c2bed.firebaseio.com/posts.json',
         {
-          headers: new HttpHeaders({ 'Custom-Header': 'Hello' }),
-          params: searchParams,
+          headers,
+          params,
           responseType: 'json'
         }
       )
