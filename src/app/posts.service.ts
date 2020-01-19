@@ -17,7 +17,7 @@ export class PostsService {
     const postData: Post = { title: title, content: content }
     this.http
       .post(
-        'https://ng-guide-c2bed.firebaseio.com/posts.json',
+        'https://ng-guide-c2bed.firebaseio.com/posts.json', // url
         postData // body
       )
       .subscribe(responseData => console.log(responseData));
@@ -39,5 +39,7 @@ export class PostsService {
       );
   }
 
-  onClearPosts() { }
+  deletePost() {
+    return this.http.delete('https://ng-guide-c2bed.firebaseio.com/posts.json');
+  }
 }
