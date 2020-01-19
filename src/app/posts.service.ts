@@ -44,7 +44,8 @@ export class PostsService {
       .get<{ [key: string]: Post }>('https://ng-guide-c2bed.firebaseio.com/posts.json',
         {
           headers: new HttpHeaders({ 'Custom-Header': 'Hello' }),
-          params: searchParams
+          params: searchParams,
+          responseType: 'json'
         }
       )
       .pipe(
