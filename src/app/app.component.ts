@@ -14,6 +14,7 @@ import { PostsService } from './posts.service';
 export class AppComponent implements OnInit {
 
   public loadedPosts = [];
+  public error = null;
 
   constructor(private postsSrv: PostsService) { }
 
@@ -32,6 +33,8 @@ export class AppComponent implements OnInit {
     this.postsSrv.fetchPosts()
       .subscribe(posts => {
         this.loadedPosts = posts
+      }, error => {
+        this.error = error.message;
       });
   }
 
