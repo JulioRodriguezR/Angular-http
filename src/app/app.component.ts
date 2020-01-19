@@ -40,6 +40,10 @@ export class AppComponent implements OnInit, OnDestroy {
     this.errorSub.unsubscribe();
   }
 
+  onHandleError() {
+    this.error = null;
+  }
+
   onCreatePost(postData: Post) {
     this.postsSrv.createAndStorePost(postData.title, postData.content);
   }
