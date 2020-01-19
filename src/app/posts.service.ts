@@ -67,7 +67,8 @@ export class PostsService {
   deletePost() {
     return this.http.delete('https://ng-guide-c2bed.firebaseio.com/posts.json',
       {
-        observe: 'events'
+        observe: 'events',
+        responseType: 'text'
       }).pipe(
         tap(ev => {
           console.log(ev);
