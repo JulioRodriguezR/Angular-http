@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams, HttpEventType } from '@angular/common/http';
 
-import { map, catchError } from 'rxjs/operators';
+import { map, catchError, tap } from 'rxjs/operators';
 
 import { Post } from './post.model';
 import { Subject, throwError } from 'rxjs';
@@ -19,13 +19,17 @@ export class PostsService {
   createAndStorePost(title: string, content: string) {
     const postData: Post = { title: title, content: content }
     this.http
-      .post(
+      .post<{ name: string }>(
         'https://ng-guide-c2bed.firebaseio.com/posts.json', // url
-        postData // body
+        postData, // body
+        {
+          // clave de observación
+          observe: 'response'
+        }
       )
       .subscribe(
         responseData => {
-          console.log(responseData)
+          console.log(responseData.body)
         },
         error => {
           this.error.next(error.message);
@@ -61,6 +65,19 @@ export class PostsService {
   }
 
   deletePost() {
-    return this.http.delete('https://ng-guide-c2bed.firebaseio.com/posts.json');
+    return this.http.delete('https://ng-guide-c2bed.firebaseio.com/posts.json',
+      {
+        observe: 'events'
+      }).pipe(
+        tap(ev => {
+          console.log(ev);
+          if (ev.type === HttpEventType.Sent) {
+            // ...
+          }
+          if (ev.type === HttpEventType.Response) {
+            console.log(ev.body);
+          }
+        })
+      )
   }
 }

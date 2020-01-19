@@ -55,6 +55,7 @@ export class AppComponent implements OnInit, OnDestroy {
       },
         error => {
           this.error = error.message;
+          console.log(error);
         }
       );
   }
