@@ -10,10 +10,11 @@ export class AuthInterceptorService implements HttpInterceptor {
         // Durante el flujo lanzar función de next para dejar de continuar
 
         console.log('Request is on its way');
+        const modifieReq = req.clone({
+            headers: req.headers.append('Auth', 'azx')
+        });
 
-
-        return next.handle(req);
-
-        // -- cada vez que una solicitudabadonde la aplicación
+        // Cambio y reeenvio de la solicitud modificada
+        return next.handle(modifieReq);
     }
 }
