@@ -28,7 +28,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
     this.postsSrv.fetchPosts()
       .subscribe(posts => {
-        this.loadedPosts = posts
+        this.loadedPosts = posts;
       },
         error => {
           this.error = error.message;
@@ -51,7 +51,7 @@ export class AppComponent implements OnInit, OnDestroy {
   onFetchPosts() {
     this.postsSrv.fetchPosts()
       .subscribe(posts => {
-        this.loadedPosts = posts
+        this.loadedPosts = posts;
       },
         error => {
           this.error = error.message;
@@ -64,6 +64,6 @@ export class AppComponent implements OnInit, OnDestroy {
     this.postsSrv.deletePost()
       .subscribe(() => {
         this.loadedPosts = [];
-      })
+      });
   }
 }
